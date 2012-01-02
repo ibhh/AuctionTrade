@@ -5,9 +5,13 @@ package me.ibhh.AuctionTrade;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.bukkit.command.CommandSender;
 
 /**
  * @author Simon
@@ -20,7 +24,6 @@ public class SQLConnectionHandler
 	private String dbUser;
 	private String dbPassword;
 	private Connection cn;
-	private Statement stmt;
 	private boolean useMySQL;
 	private AuctionTrade auTrade;
 	
@@ -31,7 +34,6 @@ public class SQLConnectionHandler
 		dbUser = auTrade.getConfig().getString("dbUser");
 		dbPassword = auTrade.getConfig().getString("dbPassword");
 		cn = null;
-		stmt = null;
 		useMySQL = auTrade.getConfig().getBoolean("SQL");
 
 	}
@@ -62,27 +64,25 @@ public class SQLConnectionHandler
 //	    UpdateDB();
 	  }
 
-	public boolean CreateTable() {
+	public boolean InsertAuction(int i, CommandSender sender, String ItemId, Date date, Date date1, String Winner) {
 
-		try {
-			stmt = cn.createStatement();
-
-			stmt.executeQuery("SELECT * FROM AuctionTrade");
-			return true;
-		} catch (SQLException e) {
-			System.out
-					.println("[AuctionTrade] SQL table doesn't exist; trying to create new table.");
-
-			try {
-				stmt.executeUpdate("CREATE TABLE AuctionTrade (Time DOUBLE, sender CHAR(20), ItemId CHAR(20), Begin DOUBLE, End DOUBLE, Winner CHAR(20), answer CHAR(50), PRIMARY KEY (ID))");
-				return true;
-			} catch (SQLException e2) {
-				System.out
-						.println("[AuctionTrade] could not be enabled: Failed to create SQL table");
-				e2.printStackTrace();
-				return false;
-			}
-		}
+	    try {
+	        PreparedStatement ps = cn.prepareStatement("INSERT INTO jail_prisoners  (Time, sender, ItemId, Begin, End, Winner) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+	        ps.setInt(1, i);
+	        ps.setString(2, sender.getName());
+	        ps.setString(3, ItemId);
+	        ps.setDate(4, date);
+	        ps.setDate(5, date1);
+	        ps.setString(6, Winner);
+	        ps.executeUpdate();
+	        cn.commit();
+	        ps.close();
+	        return true;
+	      } catch (SQLException e) {
+	        System.out.println("[AuctionTrade] Error while inserting Prisoner into DB! - " + e.getMessage());
+	        e.printStackTrace();
+	        return false;
+	      }
 	}
 
 	public Connection createConnection() {

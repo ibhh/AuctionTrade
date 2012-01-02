@@ -171,7 +171,10 @@ public class AuctionTrade extends JavaPlugin
 					{
 						if(args[0].equalsIgnoreCase("create"))
 						{
-							
+							long time = System.currentTimeMillis();
+							java.sql.Date date = new java.sql.Date(time);
+							String ItemId = args[1];
+							con.InsertAuction(15, sender, ItemId, date, null, "");
 						}
 					}
 				}
