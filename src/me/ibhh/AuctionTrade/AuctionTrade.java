@@ -167,7 +167,13 @@ public class AuctionTrade extends JavaPlugin
 			{
 				if(Permission.checkpermissions(player, action))
 				{
-					
+					if(args.length == 1)
+					{
+						if(args[0].equalsIgnoreCase("create"))
+						{
+							
+						}
+					}
 				}
 			}
 		} else {

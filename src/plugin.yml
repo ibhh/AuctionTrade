@@ -9,51 +9,11 @@ main: me.ibhh.AuctionTrade.AuctionTrade
 commands:
   xpShop:
     description: player gets xp for money.
-    usage: /xpShop buy <xp|money>
+    usage: /AuctionTrade
 permissions:
-  xpShop.*:
+  AuctionTrade.*:
     description: Gives access to all xpShop commands
     children:
-      xpShop.buy: false
-      xpShop.sell: false
-      xpShop.buylevel: false
-      xpShop.selllevel: false
-      xpShop.info: false
-      xpShop.send: false
-      xpShop.infoxp.own: false
-      xpShop.infoxp.other: false
-      xpShop.infolevel.own: false
-      xpShop.infolevel.other: false
-  xpShop.buy:
-    description: Allows you to buy xp.
-    default: false
-  xpShop.sell:
-    description: Allows you to sell xp.
-    default: false
-  xpShop.buylevel:
-    description: Allows you to buy level.
-    default: false
-  xpShop.selllevel:
-    description: Allows you to sell level.
-    default: false
-  xpShop.info:
-    description: gives you an info.
-    default: false
-  xpShop.help:
-    description: gives you a help.
-    default: false
-  xpShop.send:
-    description: send XP to other players.
-    default: false
-  xpShop.infoxp.own:
-    description: Returns your XP amount.
-    default: false
-  xpShop.infolevel.own:
-    description: Returns your level amount.
-    default: false
-  xpShop.infoxp.other:
-    description: Returns your level amount of any player.
-    default: false
-  xpShop.infolevel.other:
-    description: Returns level amount of any player.
+      AuctionTrade.create: false
+    description: Creates a new auction.
     default: false
