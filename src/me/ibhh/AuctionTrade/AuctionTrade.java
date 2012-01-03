@@ -3,6 +3,8 @@
  */
 package me.ibhh.AuctionTrade;
 
+import java.sql.Date;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,6 +19,7 @@ public class AuctionTrade extends JavaPlugin
 	public float Version = 0;
 	private SQLConnectionHandler con;
 	private PermissionsHandler Permission;
+	private TimeHandler Time;
 	private String action = "";
 
 	/**
@@ -58,6 +61,7 @@ public class AuctionTrade extends JavaPlugin
 		UpdateConfig();
 		con = new SQLConnectionHandler(this);
 		Permission = new PermissionsHandler(this);
+		Time = new TimeHandler();
 		try {
 			con.createConnection();
 		} catch (Exception e) {
@@ -163,7 +167,7 @@ public class AuctionTrade extends JavaPlugin
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 			action = args[0];
-			if (cmd.getName().equalsIgnoreCase("xpShop")) 
+			if (cmd.getName().equalsIgnoreCase("AuctionTrade")) 
 			{
 				if(Permission.checkpermissions(player, action))
 				{
@@ -171,8 +175,7 @@ public class AuctionTrade extends JavaPlugin
 					{
 						if(args[0].equalsIgnoreCase("create"))
 						{
-							long time = System.currentTimeMillis();
-							java.sql.Date date = new java.sql.Date(time);
+							Date date = Time.getDate();
 							String ItemId = args[1];
 							con.InsertAuction(15, sender, ItemId, date, null, "");
 						}
