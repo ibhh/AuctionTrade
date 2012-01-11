@@ -81,12 +81,6 @@ public class AuctionTrade extends JavaPlugin
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		try {
-			iConomyHandler.iConomyversion();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		System.out.println("[AuctionTrade] Version: " + Version
 				+ " successfully enabled!");
