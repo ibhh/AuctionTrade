@@ -3,21 +3,18 @@
  */
 package me.ibhh.AuctionTrade;
 
-import java.sql.Date;
-
 /**
  * @author Simon
  *
  */
 public class TimeHandler {
 
-	public Date getDate()
+	public Long getTime()
 	{
 		try 
 		{
 		long time = System.currentTimeMillis();
-		java.sql.Date date = new java.sql.Date(time);
-		return date;
+		return time;
 		}
 		catch (Exception e) {
 		      System.out.println("[AuctionTrade]: Error while getting Date! - " + e.getMessage());

@@ -1,0 +1,162 @@
+
+	/**
+	 * Called by onCommand and selllevel, sells XP.
+	 *
+	 * @param sender, amount, moneyactive = true if you want that player have to buy XP, false if there is an info what that would cost.
+	 * @return true if no error occurred.
+	 */
+	public int sell(CommandSender sender, int sellamount, boolean moneyactive, String von)
+	{
+		Player player = (Player) sender;
+		if (sellamount == 0)
+		{
+			SubstractedXP = 0;
+			return SubstractedXP;
+		}
+		if(player.getLevel() + player.getExp() <= 0.14)
+		{
+			player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + (getConfig().getString("command.error.notenoughxp." + getConfig().getString("language"))));
+			SubstractedXP = 0;
+			return SubstractedXP;
+		}
+		else
+		{
+			try
+			{
+				/**	 Noch nicht von Bukkit implementiert!
+				if(player.getTotalExperience() >= sellamount)
+				{
+					getmoney = (getConfig().getDouble("xptomoney"));
+					int neuXP = player.getTotalExperience() - sellamount;
+					player.setTotalExperience(neuXP);
+					addmoney156((getmoney * sellamount), player);
+					if(ActionxpShop.equalsIgnoreCase("sell"))
+					{
+						player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + (getConfig().getString("command.success." + ActionxpShop + "." + getConfig().getString("language") + ".1")) + " " + sellamount + " " + (getConfig().getString("command.success." + ActionxpShop + "." + getConfig().getString("language") + ".2")) + " " + addmoney + " " + (getConfig().getString("command.success." + ActionxpShop + "." + getConfig().getString("language") + ".3")));
+					}
+				}
+				else
+				{
+					player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + (getConfig().getString("command.error.notenoughxp." + getConfig().getString("language"))));
+				}
+				 **/
+				if(SubstractedXP != 0)
+				{
+					SubstractedXP = 0;
+				}
+				getmoney = (getConfig().getDouble("xptomoney"));
+				while((SubstractedXP < sellamount) && (player.getLevel() + player.getExp() >= 0.14))
+				{
+					float endetest = 0;
+					float anfangtest = player.getExp();
+					int anfangleveltest = player.getLevel();
+					player.giveExp(1);
+					if(anfangleveltest < player.getLevel())
+					{
+						player.giveExp(-2);
+					}
+					else if(anfangleveltest == player.getLevel())
+					{
+						endetest = player.getExp();
+					}
+					float diff = endetest - anfangtest;
+					
+					if((diff*2) > player.getExp())
+					{
+						float set = (player.getExp() - (diff * 2));
+						player.setExp(set);
+						if(moneyactive == true)
+						{
+							addmoney156(getmoney, player);
+						}
+						SubstractedXP++;
+					}
+					else
+					{
+						try
+						{
+							if(player.getLevel() > 0)
+							{
+							SubstractedXP++;
+							int level = player.getLevel();
+							level = level - 1;
+							player.setLevel(level);
+							player.setExp( (float) 0.999999);
+							if(moneyactive == true)
+							{
+								addmoney156(getmoney, player);
+							}
+							}
+							else
+							{
+								break;
+							}
+						}
+						catch (Exception E)
+						{
+							E.printStackTrace();
+							player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + (getConfig().getString("command.error.else." + getConfig().getString("language"))));
+						}
+					}
+
+				} //while(SubstractedXP > TOTALXP)
+			}
+			catch (NumberFormatException ex)
+			{
+				player.sendMessage("Invalid exp count: " + sellamount);
+				return SubstractedXP;
+			}
+			player.saveData();
+			double x = (getConfig().getDouble("xptomoney"))* SubstractedXP;
+			addmoney = Math.round(x);
+			if(ActionxpShop.equalsIgnoreCase("sell"))
+			{
+				player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + String.format((getConfig().getString("command.success." + "sell" + "." + getConfig().getString("language"))), SubstractedXP, addmoney));
+			}
+			else if (ActionxpShop.equalsIgnoreCase("info") && von.equals("selllevel") == false)
+			{
+				player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + String.format((getConfig().getString("info.prefix." + getConfig().getString("language"))) + " " + (getConfig().getString("command.success.sell." + getConfig().getString("language"))), SubstractedXP, addmoney));
+			}
+		}
+		return SubstractedXP;
+	}
+	
+	
+	/**
+	 * Sells level from a player.
+	 *
+	 * @param sender, amount, moneyactive = true if you want that player have to buy XP, false if there is an info what that would cost.
+	 * @return 
+	 */
+	public void selllevel(CommandSender sender, int levelamontsell, boolean moneyactive)
+	{
+		Player player = (Player) sender;
+		if(player.getLevel() + player.getExp() <= 0.20)
+		{
+			player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + (getConfig().getString("command.error.notenoughxp." + getConfig().getString("language"))));
+			return;
+		}
+		else
+		{
+			int levelsell = player.getLevel();
+			while ((player.getLevel() + player.getExp() >= 0.14) && ((levelsell - player.getLevel()) <= levelamontsell))
+			{
+				if(moneyactive == true)
+				{
+					rounds = rounds + sell(sender, 1, true, "selllevel");
+				}
+				else if(moneyactive == false)
+				{
+					rounds = rounds + sell(sender, 1, false, "selllevel");
+				}
+			}
+			if(ActionxpShop.equalsIgnoreCase("buylevel"))
+			{
+				player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + String.format((getConfig().getString("command.success." + "selllevel" + "." + getConfig().getString("language"))), rounds, ((getConfig().getDouble("xptomoney")) * rounds)));
+			}
+			else if (ActionxpShop.equalsIgnoreCase("info"))
+			{
+				player.sendMessage(ChatColor.GRAY + "[xpShop]" + ChatColor.RED + String.format((getConfig().getString("info.prefix." + getConfig().getString("language"))) + " " + (getConfig().getString("command.success.selllevel" + "." + getConfig().getString("language"))), rounds, ((getConfig().getDouble("xptomoney")) * rounds)));
+			}
+		}
+	}

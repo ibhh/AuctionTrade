@@ -1,14 +1,6 @@
 package me.ibhh.AuctionTrade;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Serializable;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -45,7 +37,7 @@ class Update implements Serializable {
 		}
 		File file = new File(path + name);
 
-		if (file.exists() && name.equals("xpShop.jar")) {
+		if (file.exists() && name.equals("AuctionTrade.jar")) {
 			file.delete();
 			try {
 				URL newurl = new URL(url);
@@ -63,7 +55,7 @@ class Update implements Serializable {
 				buffout.flush();
 				buffout.close();
 				buffin.close();
-				System.out.println("[xpShop] New " + name
+				System.out.println("[AuctionTrade] New " + name
 						+ " downloaded, Look up under " + path);
 			} finally {
 			}
@@ -86,7 +78,7 @@ class Update implements Serializable {
 				buffout.flush();
 				buffout.close();
 				buffin.close();
-				System.out.println("[xpShop] New " + name
+				System.out.println("[AuctionTrade] New " + name
 						+ " downloaded, Look up under " + path);
 			} finally {
 			}

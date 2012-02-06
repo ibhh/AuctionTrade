@@ -1,9 +1,20 @@
 language: en
 autodownload: true
+firstRun: true
+debug: false
 SQL: false
-dbPath: localhost:3306/jail
-dbUser: 
-dbPassword: 
+dbPath: localhost:3306/AuctionTrade
+dbUser: nulll
+dbPassword: nulll
+command:
+  success:
+    create:
+      de: Auction erfolgreich mit Zeit %d und Item %s und Anfangspreis %f erstellt!
+      en: Auction successfully with time %d und Item %s und amount %f created!
+  error:
+    time0:
+      de: Die Dauer darf nicht 0 sein!
+      en: time couldnt be 0!
 permissions:
   error:
     de: Houston Wir haben ein Problem! Diesen Befehl darfst Du nicht verwenden!
